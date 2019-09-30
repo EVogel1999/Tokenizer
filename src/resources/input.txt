@@ -1,0 +1,4 @@
+if(id <= num) then id := 1234;
+1234 - id;
+bool int_1
+#
