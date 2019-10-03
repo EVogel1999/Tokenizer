@@ -9,17 +9,17 @@ public class Tokenizer {
     // The keywords of the mini-language
     private static final String[] KEYWORDS =
             {"or", "and", "not", "=", "<", "+", "-", "*", "/", "(", ")", "false", "true", "begin", "end", "bool", "int",
-                    ";", ":=", "if", "then", "else", "fi", "while", "do", "od", "print", "<=", ">=", ">"};
+                    ";", ":=", "if", "then", "else", "fi", "while", "do", "od", "print", "<=", ">=", ">", "_"};
 
-    // ([A-z]+[_0-9A-z]*)                                           Identifier and text pattern
-    // ([0-9]+)                                                     Digit pattern
-    // (:=)|(<=)|(>=)|(=)|(<)|(>)|(;)|(\+)|(-)|(\/)|(\*)|(\()|(\))  Operator pattern
-    // [^A-z0-9_ \t\n+-=\*\/<>();:]                                 Invalid character pattern
-    // //.*                                                         Comment pattern
-    // |                                                            Or
+    // ([A-z]+[_0-9A-z]*)                                               Identifier and text pattern
+    // ([0-9]+)                                                         Digit pattern
+    // (:=)|(<=)|(>=)|(=)|(<)|(>)|(;)|(\+)|(-)|(\/)|(\*)|(\()|(\))|(_)  Operator pattern
+    // [^A-z0-9_ \t\n+-=\*\/<>();:]                                     Invalid character pattern
+    // //.*                                                             Comment pattern
+    // |                                                                Or
 
     // Regex that breaks it up into IDs, Numbers, or Keywords
-    private final Pattern tokenizer = Pattern.compile("([A-z]+[_0-9A-z]*)|([0-9]+)|(:=)|(<=)|(>=)|(=)|(<)|(>)|(;)|(\\+)|(-)|(\\/)|(\\*)|(\\()|(\\))");
+    private final Pattern tokenizer = Pattern.compile("(_)|([A-z]+[_0-9A-z]*)|([0-9]+)|(:=)|(<=)|(>=)|(=)|(<)|(>)|(;)|(\\+)|(-)|(\\/)|(\\*)|(\\()|(\\))");
     // Regex that checks if the input contains any invalid characters
     private final Pattern linter = Pattern.compile("[^A-z0-9_ \\t\\n+-=\\*\\/<>();:]");
 
@@ -237,7 +237,7 @@ public class Tokenizer {
 
         @Override
         public String toString() {
-            return "<" + kind + ", " + value + ">";
+            return "< " + kind + ", " + value + " >";
         }
     }
 }
