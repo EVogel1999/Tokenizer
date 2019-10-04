@@ -14,14 +14,14 @@ public class Tokenizer {
     // ([A-z]+[_0-9A-z]*)                                               Identifier and text pattern
     // ([0-9]+)                                                         Digit pattern
     // (:=)|(<=)|(>=)|(=)|(<)|(>)|(;)|(\+)|(-)|(\/)|(\*)|(\()|(\))|(_)  Operator pattern
-    // [^A-z0-9_ \t\n+-=\*\/<>();:]                                     Invalid character pattern
+    // [^A-z0-9_ \t\n+-=\*\/<>();:]|[.]                                     Invalid character pattern
     // //.*                                                             Comment pattern
     // |                                                                Or
 
     // Regex that breaks it up into IDs, Numbers, or Keywords
     private final Pattern tokenizer = Pattern.compile("(_)|([A-z]+[_0-9A-z]*)|([0-9]+)|(:=)|(<=)|(>=)|(=)|(<)|(>)|(;)|(\\+)|(-)|(\\/)|(\\*)|(\\()|(\\))");
     // Regex that checks if the input contains any invalid characters
-    private final Pattern linter = Pattern.compile("[^A-z0-9_ \\t\\n+-=\\*\\/<>();:]");
+    private final Pattern linter = Pattern.compile("[^A-z0-9_ \\t\\n+-=\\*\\/<>();:]|[.]");
 
     private Scanner scanner;
     private Token currentToken;
@@ -139,7 +139,7 @@ public class Tokenizer {
             if (!scanner.hasNextLine()) {
                 line++;
                 position = 0;
-                currentToken = new Token("end-of-text", null, line - 1, 0);
+                currentToken = new Token("end-of-text", null, line, 0);
             } else {
                 next();
             }

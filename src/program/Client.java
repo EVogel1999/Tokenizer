@@ -8,7 +8,7 @@ public class Client {
             while (!tokenizer.kind().equals("end-of-text")) {
                 tokenizer.next();
                 System.out.println("\n" + tokenizer.position());
-                System.out.println("<" + tokenizer.kind() + ", " + tokenizer.value() + ">");
+                System.out.println("< " + tokenizer.kind() + ", " + tokenizer.value() + " >");
             }
         } catch (Exception e) {
             e.printStackTrace();
