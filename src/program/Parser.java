@@ -1,5 +1,6 @@
 package program;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Parser {
@@ -14,21 +15,26 @@ public class Parser {
         tokenizer = new Tokenizer(file_loc);
     }
 
-    public void run() throws Exception {
-        nextSymbol();
-        expression();
+    public boolean run() throws Exception {
+        try {
+            nextSymbol();
+            expression();
 
-        if (!tokenizer.kind().equals("end-of-text")) {
-            // TODO use report error function
-            throw new Exception("Found symbol " + tokenizer.kind() + " at line " + tokenizer.position() + " expected end-of-text");
+            if (!tokenizer.kind().equals("end-of-text")) {
+                // TODO use report error function
+              throw new Exception("Found symbol " + tokenizer.kind() + " at line " + tokenizer.position() + " expected end-of-text");
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 
-    public void expression() throws Exception {
+    private void expression() throws Exception {
         booleanExpression();
     }
 
-    public void booleanExpression() throws Exception {
+    private void booleanExpression() throws Exception {
         booleanTerm();
 
         while (isIn(new String[]{"or"})) {
@@ -37,7 +43,7 @@ public class Parser {
         }
     }
 
-    public void booleanTerm() throws Exception {
+    private void booleanTerm() throws Exception {
         booleanFactor();
 
         while (isIn(new String[]{"and"})) {
@@ -46,7 +52,7 @@ public class Parser {
         }
     }
 
-    public void booleanFactor() throws Exception {
+    private void booleanFactor() throws Exception {
         if (isIn(new String[]{"not"})) {
             nextSymbol();
         }
@@ -59,7 +65,7 @@ public class Parser {
         }
     }
 
-    public void booleanLiteral() throws Exception {
+    private void booleanLiteral() throws Exception {
         if (isIn(new String[]{"true", "false"})) {
             nextSymbol();
         } else {
@@ -67,7 +73,7 @@ public class Parser {
         }
     }
 
-    public void arithmeticExpression() throws Exception{
+    private void arithmeticExpression() throws Exception{
         term();
 
         while (isIn(new String[]{"+", "-"})) {
@@ -76,7 +82,7 @@ public class Parser {
         }
     }
 
-    public void term() throws Exception {
+    private void term() throws Exception {
         factor();
 
         while (isIn(new String[]{"*", "/"})) {
@@ -85,7 +91,7 @@ public class Parser {
         }
     }
 
-    public void factor() throws Exception {
+    private void factor() throws Exception {
         if (isIn(new String[]{"true", "false", "NUM"})) {
             literal();
         } else if (isIn(new String[]{"ID"})) {
@@ -100,7 +106,7 @@ public class Parser {
         }
     }
 
-    public void literal() throws Exception {
+    private void literal() throws Exception {
         if (isIn(new String[]{"true", "false", "NUM"})) {
             if (isIn(new String[]{"NUM"})) {
                 nextSymbol();
@@ -112,7 +118,7 @@ public class Parser {
         }
     }
 
-    public void accept(String symbol) throws Exception {
+    private void accept(String symbol) throws Exception {
         if (tokenizer.kind().equals(symbol)) {
             nextSymbol();
         } else {
@@ -127,13 +133,13 @@ public class Parser {
         }
     }
 
-    public void nextSymbol() throws Exception{
+    private void nextSymbol() throws Exception{
         if (!isIn(new String[]{"end-of-text"})) {
             tokenizer.next();
         }
     }
 
-    public boolean isIn(String[] symbols) throws Exception {
+    private boolean isIn(String[] symbols) throws Exception {
         for (String symbol: symbols) {
             if (symbol.equals(tokenizer.kind()))
                 return true;
